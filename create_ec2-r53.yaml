@@ -2,16 +2,8 @@
   hosts: localhost
   connection: local
   gather_facts: no
-  vars:
-    region: us-east-1
-    ami_id: ami-09c813fb71547fc4f
-    instance_type: t2.micro
-    security_group: sg-08544cbe0920c82a5
-    subnet_id: subnet-02ad4676bfc059370
-    instance_name:
-    - frontend
-    - backend
-    - mysql
+  vars_files:
+  - ec2_vars.yaml
   tasks:
     - name: Create ec2-instances
       amazon.aws.ec2_instance:
@@ -28,3 +20,8 @@
           Environment: Dev
       loop: "{{ instance_name }}"
       register: ec2_result
+
+    - name: print the output
+      ansible.builtin.debug:
+        msg: "{{ ec2_result }}"
+    

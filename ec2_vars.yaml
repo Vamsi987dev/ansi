@@ -1,0 +1,9 @@
+region: us-east-1
+ami_id: ami-09c813fb71547fc4f
+instance_type: t2.micro
+security_group: sg-08544cbe0920c82a5
+subnet_id: subnet-02ad4676bfc059370
+instance_name:
+  - frontend
+  - backend
+  - mysql
