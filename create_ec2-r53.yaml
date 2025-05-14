@@ -11,10 +11,12 @@
         instance_type: "{{ instance_type }}"
         image_id: "{{ami_id }}"
         region: "{{ region }}"
-        wait: yes
-        count: 1
         subnet_id: "{{ subnet_id }}"
         security_group: "{{ security_group}}"
+        wait: yes
+        exact_count: 1
+        count_tag:
+          Name: "{{ item }}"
         tags:
           Name: "{{ item }}"
           Environment: Dev
@@ -24,4 +26,17 @@
     - name: print the output
       ansible.builtin.debug:
         msg: "{{ ec2_result }}"
+
+    - name: create r53 record
+      amazon.aws.route53:
+        state: present
+        zone: "{{ zone }}"
+        record: "{{ item.item }}.{{ zone }}"
+        type: A
+        ttl: 1
+        value: "{{ item.instances[0].private_ip_address }}"
+        wait: true
+        overwrite: true
+
+      loop: "{{ ec2_result.results}}"
     

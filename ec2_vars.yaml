@@ -7,3 +7,4 @@ instance_name:
   - frontend
   - backend
   - mysql
+zone: daws81s.icu
